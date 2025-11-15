@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TerpTreasure</title>
+    <style>
+        :root {
+            --umd-red: #e21833;
+            --umd-gold: #ffd200;
+            --umd-black: #000000;
+            --bg-light: #fafafa;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--bg-light);
+            color: #222;
+        }
+
+        header {
+            background: var(--umd-red);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px 25px;
+            background: var(--umd-black);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--umd-gold);
+        }
+
+        .hero {
+            padding: 80px 20px;
+            text-align: center;
+            background: white;
+            animation: fadeIn 0.7s ease;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            color: var(--umd-red);
+            font-weight: bold;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-top: 10px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .about {
+            margin: 50px auto;
+            max-width: 800px;
+            padding: 20px;
+            text-align: center;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .about h2 {
+            color: var(--umd-black);
+            margin-bottom: 10px;
+        }
+
+        .about p {
+            font-size: 17px;
+            line-height: 1.5;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>TerpTreasure</header>
+
+    <nav>
+        <a href="signup.html">Login / Sign Up</a>
+    </nav>
+
+    <section class="hero">
+        <h1>Welcome to TerpTreasure!</h1>
+        <p>
+            Your student marketplace to buy, sell, exchange, or browse items from fellow Terps.
+            Whether you’re looking to get rid of something or find a great deal, TerpTreasure connects students across campus.
+        </p>
+    </section>
+
+    <section class="about">
+        <h2>About Us</h2>
+        <p>
+            TerpTreasure was created to give University of Maryland students a convenient and safe way to
+            exchange used items. From textbooks to dorm essentials, we help Terps save money, reduce waste,
+            and build community through sustainable sharing.
+        </p>
+    </section>
+
+</body>
+</html>
