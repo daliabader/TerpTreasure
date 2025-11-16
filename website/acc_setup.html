@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Setup</title>
+
+    <style>
+        :root {
+            --umd-red: #e21833;
+            --umd-gold: #ffd200;
+            --umd-black: #000000;
+            --bg-light: #f5f5f5;
+            --card-light: #ffffff;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 60px;
+        }
+
+        .container {
+            width: 450px;
+            background: var(--card-light);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(10px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--umd-red);
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 2px solid var(--umd-gold);
+            border-radius: 6px;
+            resize: vertical;
+        }
+
+        textarea {
+            height: 80px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            background: var(--umd-red);
+            border: none;
+            color: white;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--umd-black);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Finish Setting Up Your Account</h2>
+
+        <form>
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+
+            <label for="location">Where Do You Live?</label>
+            <select id="location" required>
+                <option value="">Select</option>
+                <option>On-campus (dorm)</option>
+                <option>Off-campus apartment</option>
+                <option>Commuter</option>
+            </select>
+
+            <label for="wants">Willing to Trade For</label>
+            <textarea id="wants" placeholder="this means you are willing to trade with a person if they have these items <br> e.g., textbooks, dorm décor, etc"></textarea>
+
+            <button type="submit">Save My Profile</button>
+        </form>
+    </div>
+
+    <script>
+        // Autofill name and email using URL parameters
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById("fullname").value = params.get("name") || "";
+        document.getElementById("email").value = params.get("email") || "";
+
+        // Show custom pronoun input if needed
+        document.getElementById("pronouns").addEventListener("change", function() {
+            const custom = document.getElementById("customPronouns");
+            if (this.value === "Custom (type below)") {
+                custom.style.display = "block";
+                custom.required = true;
+            } else {
+                custom.style.display = "none";
+                custom.required = false;
+            }
+        });
+    </script>
+</body>
+</html>
