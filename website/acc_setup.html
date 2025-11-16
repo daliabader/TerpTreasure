@@ -60,9 +60,7 @@
             resize: vertical;
         }
 
-        textarea {
-            height: 80px;
-        }
+        textarea { height: 80px; }
 
         button {
             width: 100%;
@@ -87,7 +85,26 @@
     <div class="container">
         <h2>Finish Setting Up Your Account</h2>
 
-        <form>
+        <!-- FIX: This is the ONLY form tag -->
+        <form onsubmit="
+            event.preventDefault();
+
+            const name = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const location = document.getElementById('location').value;
+            const wants = document.getElementById('wants').value;
+
+            // Save data so the homepage can use it
+            localStorage.setItem('user_name', name);
+            localStorage.setItem('user_email', email);
+            localStorage.setItem('user_location', location);
+            localStorage.setItem('user_wants', wants);
+            localStorage.setItem('from_setup', 'yes');
+
+            // Redirect to homepage
+            window.location.href = 'main_page.html';
+        ">
+
             <label for="fullname">Full Name</label>
             <input type="text" id="fullname" required>
 
@@ -103,9 +120,9 @@
             </select>
 
             <label for="wants">Willing to Trade For</label>
-            <textarea id="wants" placeholder="this means you are willing to trade with a person if they have these items <br> e.g., textbooks, dorm décor, etc"></textarea>
+            <textarea id="wants" placeholder="e.g., textbooks, dorm décor, school supplies"></textarea>
 
-            <button type="submit">Save My Profile</button>
+            <button type="submit">Get Started!</button>
         </form>
     </div>
 
@@ -114,18 +131,6 @@
         const params = new URLSearchParams(window.location.search);
         document.getElementById("fullname").value = params.get("name") || "";
         document.getElementById("email").value = params.get("email") || "";
-
-        // Show custom pronoun input if needed
-        document.getElementById("pronouns").addEventListener("change", function() {
-            const custom = document.getElementById("customPronouns");
-            if (this.value === "Custom (type below)") {
-                custom.style.display = "block";
-                custom.required = true;
-            } else {
-                custom.style.display = "none";
-                custom.required = false;
-            }
-        });
     </script>
 </body>
 </html>

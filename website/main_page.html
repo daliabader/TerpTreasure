@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TerpTreasure - Home</title>
+
+<style>
+:root {
+    --umd-red: #e21833;
+    --umd-gold: #ffd200;
+    --umd-black: #000000;
+    --bg-light: #f7f7f7;
+    --card-bg: #ffffff;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg-light);
+}
+
+/* Header */
+header {
+    background: var(--umd-red);
+    padding: 20px;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    position: relative;
+}
+
+/* Profile Circle */
+.profile-pic {
+    width: 48px;
+    height: 48px;
+    background: var(--umd-black);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 18px;
+    cursor: pointer;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+/* Overlay to detect clicks outside sidebar */
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 900;
+}
+
+/* Sidebar (Right) */
+.sidebar {
+    height: 100%;
+    width: 200px;
+    background: var(--card-bg);
+    position: fixed;
+    top: 0;
+    right: -260px; /* completely hidden initially */
+    box-shadow: -2px 0 6px rgba(0,0,0,0.2);
+    transition: 0.3s ease;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.sidebar.open {
+    right: 0; /* slide in */
+}
+
+.sidebar h3 {
+    margin-top: 0;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px 0;
+    color: var(--umd-red);
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Main Content */
+.content {
+    padding: 25px;
+}
+
+h2 {
+    color: var(--umd-red);
+    margin-bottom: 10px;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 7px rgba(0,0,0,0.1);
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+}
+
+.category-box {
+    background: white;
+    padding: 18px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    border: 2px solid var(--umd-gold);
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.category-box:hover {
+    background: var(--umd-red);
+    color: white;
+    border-color: var(--umd-red);
+}
+</style>
+</head>
+
+<body>
+
+<!-- Overlay -->
+<div id="overlay"></div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <h3>Menu</h3>
+    <a href="#">Settings</a>
+    <a href="#">Help</a>
+</div>
+
+<!-- Header -->
+<header>
+    <span id="welcome-text"></span>
+    <div class="profile-pic" id="profilePic">??</div>
+</header>
+
+<!-- Main Content -->
+<div class="content">
+    <div class="card">
+        <h2>Things for You</h2>
+        <p id="matchedItems">Loading items based on your wants...</p>
+    </div>
+
+    <div class="card">
+        <h2>Browse</h2>
+        <div class="categories">
+            <div class="category-box">Textbooks</div>
+            <div class="category-box">School Supplies</div>
+            <div class="category-box">Dorm Essentials</div>
+            <div class="category-box">Electronics</div>
+            <div class="category-box">Misc</div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ---------------------------
+// GET USER DATA FROM localStorage
+// ---------------------------
+const name = localStorage.getItem('user_name') || '';
+const wants = localStorage.getItem('user_wants')
+    ? localStorage.getItem('user_wants').split(',').map(w => w.trim())
+    : [];
+
+// ---------------------------
+// SHOW 'WELCOME' IF COMING FROM SETUP
+// ---------------------------
+const fromSetup = localStorage.getItem('from_setup') === 'yes';
+if (fromSetup) {
+    document.getElementById("welcome-text").textContent = "Welcome!";
+    localStorage.removeItem('from_setup'); // show only once
+}
+
+// ---------------------------
+// GENERATE PROFILE INITIALS
+// ---------------------------
+function getInitials(fullName) {
+    if (!fullName) return "??";
+    const parts = fullName.trim().split(" ");
+    if (parts.length === 1) return parts[0][0].toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+}
+document.getElementById("profilePic").textContent = getInitials(name);
+
+// ---------------------------
+// SIDEBAR TOGGLE + CLOSE ON OUTSIDE CLICK
+// ---------------------------
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
+document.getElementById("profilePic").onclick = () => {
+    sidebar.classList.add("open");
+    overlay.style.display = "block";
+};
+
+overlay.onclick = () => {
+    sidebar.classList.remove("open");
+    overlay.style.display = "none";
+};
+
+// ---------------------------
+// "THINGS FOR YOU" - Demo Matches
+// ---------------------------
+const demoItems = [
+    { name: "Calculus Textbook", category: "Textbooks" },
+    { name: "Desk Lamp", category: "Dorm Essentials" },
+    { name: "Laptop Charger", category: "Electronics" },
+    { name: "Notebook Pack", category: "School Supplies" },
+    { name: "Posters", category: "Dorm Essentials" }
+];
+
+const matchedItemsEl = document.getElementById("matchedItems");
+if (wants.length === 0) {
+    matchedItemsEl.textContent =
+        "No preferences found. Update your profile to see personalized matches.";
+} else {
+    const matches = demoItems.filter(item =>
+        wants.some(want => item.name.toLowerCase().includes(want.toLowerCase()))
+    );
+    if (matches.length > 0) {
+        matchedItemsEl.innerHTML = matches.map(item => `• ${item.name}`).join('<br>');
+    } else {
+        matchedItemsEl.textContent =
+            "No matches found for your listed wants. Check back later!";
+    }
+}
+</script>
+
+</body>
+</html>
