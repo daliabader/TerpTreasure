@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UMD Marketplace Map</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; }
+        h2 { text-align: center; margin: 10px; }
+        #map { height: 90vh; width: 95%; margin: auto; border: 2px solid #444; }
+    </style>
+</head>
+<body>
+
+<h2>UMD Marketplace Sellers</h2>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    const map = L.map('map').setView([38.9875, -76.943], 16);
+
+    // OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Dorm sellers (red)
+    const dormSellers = [
+        { name: "Jessica - Anne Arundel Hall", coords: [38.9900, -76.9450], item: "Math Textbooks" },
+        { name: "Marcus - Caroline Hall", coords: [38.9892, -76.9415], item: "Bike" },
+        { name: "Priya - Ellicott Hall", coords: [38.9870, -76.9440], item: "Laptop" },
+        { name: "Amina - Denton Hall", coords: [38.9875, -76.9435], item: "Desk Chair" },
+        { name: "Liam - South Hill", coords: [38.9855, -76.9405], item: "Desk Lamp" },
+        { name: "Ethan - North Hill", coords: [38.9856, -76.9430], item: "Gaming Console" },
+        { name: "Olivia - Prince Frederick Hall", coords: [38.9888, -76.9410], item: "Chair" }
+    ];
+
+    dormSellers.forEach(seller => {
+        L.marker(seller.coords, {
+            icon: L.icon({
+                iconUrl: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                iconSize: [32,32], iconAnchor: [16,32]
+            })
+        }).addTo(map)
+          .bindPopup(`<b>${seller.name}</b><br>Item: ${seller.item}<br><i>Dorm</i>`)
+          .openPopup(); // popup opens on load
+    });
+
+    // Off-campus sellers (green)
+    const offCampusSellers = [
+        { name: "Sophia - Tollgate House", coords: [38.9920, -76.9465], item: "Printer" },
+        { name: "Mason - Greenbelt Rd Apartment", coords: [38.9890, -76.9370], item: "Monitor" }
+    ];
+
+    offCampusSellers.forEach(seller => {
+        L.marker(seller.coords, {
+            icon: L.icon({
+                iconUrl: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                iconSize: [32,32], iconAnchor: [16,32]
+            })
+        }).addTo(map)
+          .bindPopup(`<b>${seller.name}</b><br>Item: ${seller.item}<br><i>Off-Campus</i>`);
+    });
+
+    // Buyer (blue)
+    const buyerLocation = [38.9875, -76.9420];
+    L.marker(buyerLocation, {
+        icon: L.icon({
+            iconUrl: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            iconSize: [32,32], iconAnchor: [16,32]
+        })
+    }).addTo(map)
+      .bindPopup("<b>Buyer Here</b>");
+</script>
+
+</body>
+</html>
